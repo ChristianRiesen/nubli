@@ -1,4 +1,4 @@
-FROM node:12.19.0-alpine3.12
+FROM node:18-alpine
 
 RUN apk --update add python3 alpine-sdk
 
@@ -6,12 +6,10 @@ RUN mkdir /app
 
 RUN mkdir /app/config
 
-COPY package.json /app/package.json
+COPY ./ /app
 
 WORKDIR /app
 
 RUN npm install
 
-ADD dist/lib /app/
-
-CMD ["node", "server.js"]
+CMD ["node", "dist/lib/server.js"]
