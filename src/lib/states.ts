@@ -38,7 +38,10 @@ export enum Command {
     KEYTURNER_STATES = 0x0C,
     LOCK_ACTION = 0x0D,
     AUTHORIZATION_ENTRY_COUNT = 0x27,
-    REQUEST_ADVANCED_CONFIG = 0x36
+    REQUEST_ADVANCED_CONFIG = 0x36,
+    REQUEST_LOG_ENTRIES = 0x31,
+    LOG_ENTRY = 0x32,
+    LOG_ENTRIES_COUNT = 0x33
 }
 
 export enum PairingError {
@@ -72,6 +75,20 @@ export enum NukiState {
     MAINTENANCE_MODE = 0x04
 }
 
+export enum ActionState {
+	Success = 0x00,
+	'Motor blocked' = 0x01,
+	'Canceled' = 0x02,
+	'Too recent' = 0x03,
+	Busy = 0x04,
+	'Low motor voltage' = 0x05,
+	'Clutch failure' = 0x06,
+	'Motor power failure' = 0x07,
+	'Incomplete failure' = 0x08,
+	'Other error' = 0xfe,
+	UNKNOWN = 0xFF
+}
+
 export enum LockState {
     UNCALIBRATED = 0x00,
     LOCKED = 0x01,
@@ -103,7 +120,8 @@ export enum Trigger {
     SYSTEM = 0x00,
     MANUAL = 0x01,
     BUTTON = 0x02,
-    AUTOMATIC = 0x03
+    AUTOMATIC = 0x03,
+    AUTOLOCK = 0x06
 }
 
 export enum DoorSensor {
@@ -113,6 +131,12 @@ export enum DoorSensor {
     OPEN = 0x03,
     UNKNOWN = 0x04,
     CALIBRATING = 0x05
+}
+
+export enum DoorSensorLog {
+    OPENED = 0x00,
+    CLOSED = 0x01,
+    'Sensor Jammed' = 0x02,
 }
 
 export enum HomeKit {
