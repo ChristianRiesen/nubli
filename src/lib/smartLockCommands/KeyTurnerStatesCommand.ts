@@ -30,7 +30,10 @@ export class KeyTurnerStatesCommand extends SmartLockCommand {
 
         this._response.data.currentTime = date;
 
-        this._response.data.battery_critical = payload.readUInt8(12) != 0;
+       	let battery = payload.readUInt8(12) // see https://developer.nuki.io/page/nuki-smart-lock-api-2/2#heading--keyturner-states
+        this._response.data.battery_critical = (battery & 0x01) != 0;
+	    this._response.data.battery_charging = (battery & 0x02) != 0;
+	    this._response.data.battery_percent = (battery >> 2) * 2;
         this._response.data.configUpdateCount = payload.readUInt8(13);
         this._response.data.lockNGoTimer = payload.readUInt8(14);
         this._response.data.lastLockAction = payload.readUInt8(15);

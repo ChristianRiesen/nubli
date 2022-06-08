@@ -21,6 +21,19 @@ let configs = readConfigs();
 
 console.log(configs);
 
+app.get("/:name/status", (req, res) => {
+    if(!configs[req.params.name]){
+        res.status(404).send('Lock not present in config');
+    }
+    executeAction(configs[req.params.name].uuid, (smartLock) => {
+        return lockUnlockAction(smartLock, (smartlock) => smartlock.readLockState());
+    }).then(response => {
+        res.status(200).send(response);
+    }).catch(err => {
+        res.status(400).send(err.message);
+    });
+});
+
 app.get("/:name/lock", (req, res) => {
     if(!configs[req.params.name]){
         res.status(404).send('Lock not present in config');

@@ -19,6 +19,10 @@ export class ErrorHandler {
                 return "Unknown error";
             case KeyturnerError.BAD_PIN:
                 return "The provided PIN is invalid";
+            case KeyturnerError.MOTOR_BLOCKED:
+                return "The motor was blocked during operation";
+            case KeyturnerError.CLUTCH_FAILURE:
+                return "The clutch failed";
 
             default:
                 return "Unknown error - code: 0x" + errCode.toString(16);

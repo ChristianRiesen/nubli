@@ -55,7 +55,9 @@ export enum GeneralError {
 }
 
 export enum KeyturnerError {
-    BAD_PIN = 0x21
+    BAD_PIN = 0x21,
+    MOTOR_BLOCKED = 0x42,
+    CLUTCH_FAILURE = 0x43
 }
 
 export enum Status {
