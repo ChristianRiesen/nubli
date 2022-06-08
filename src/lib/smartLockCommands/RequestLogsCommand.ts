@@ -92,7 +92,7 @@ export class RequestLogsCommand extends SmartLockCommand {
                     entry.type = "Door sensor logging enable/disable"
                     break;;
                 default:
-                    entry.type = typ
+                    entry.type = type
             }
 
             this._response.data.logs.push(entry);
