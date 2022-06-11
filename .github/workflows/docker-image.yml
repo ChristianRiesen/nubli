@@ -12,13 +12,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Docker login
-      env:
-        DOCKER_USER: ${{secrets.DOCKER_USER}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      run: |
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - name: Build the Docker images and push them
-      run: |
-        docker buildx create --use --name builder
-        docker buildx build --file Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v7 -t christianriesen/nubli --push .
+
+    - name: Login to Docker
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Available platforms
+      run: echo ${{ steps.buildx.outputs.platforms }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v2.7.0
+      with:
+        context: ./
+        platforms: linux/arm64,linux/amd64,linux/arm/v7
+        push: true
+        tags: ${{github.repository}}:latest
