@@ -4,7 +4,11 @@ RUN apk --update add python3 alpine-sdk
 
 RUN mkdir /app
 
-RUN mkdir /app/config
+RUN mkdir /app/dist
+
+RUN mkdir /app/dist/lib
+
+RUN mkdir /app/dist/lib/config
 
 COPY ./ /app
 

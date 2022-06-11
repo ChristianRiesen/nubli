@@ -24,6 +24,27 @@ Nubli is very energy efficient when used properly and should't drain more power 
 **Note**: Do not use the built-in Bluetooth in a Raspberry Pi. Due to bad hardware design it will not reliably connect to your Smart Lock and cause unexpected disconnects. I've been there and invested a whole week into fixing it.
 
 # Setup / Installation
+
+## Using Docker
+
+You can use the docker-compose.yml as a starting point, or run it directly with the following command:
+
+```
+docker run -d \
+   --name nubli \
+   --restart=unless-stopped \
+   -p 9180:8080 \
+   -v /changeme:/app/dist/lib/config \
+   christianriesen/nubli
+```
+
+Notes:
+- Default port is 8080, so you need to expose that to the outside. Alternatively you can also configure the internal port if you give it an env of `PORT` with the value you want it to have (inside the container). In the above example it assumes the default port internally and maps it to 9180 on the host.
+- The config directory will save the data about the locks the server has. If you run into trouble you can check that data or delete them entirely and the server will "forget" a lock. Change the left portion to something that makes sense for you.
+- This will try to run the docker container and keep it running even after a reboot.
+
+
+## Using NPM
 1. `npm install nubli --save`
 2. See [Examples](examples/) or [Usage](#usage)
 3. Star the repository ;)
@@ -31,7 +52,21 @@ Nubli is very energy efficient when used properly and should't drain more power 
 # Notes
 * You can only run one instance of this library simultaneously with one dongle. If want to integrate this library into multiple applications running at the same time on the same device, either pin the applications to different bluetooth dongles or communicate with a single instance of this library via a webserver/websocket/mqtt instead.
 
-# Usage
+# Included server usage
+
+If you wish to run it (see docker above for example) as a server, then Nubli will supply some endpoints for you to connect to a lock and manage it.
+
+The parameter `:name` needs to be replaced with the name of the lock, same as you may have used it in the app. I'd suggest not using spaces or special characters.
+
+`/:name/status` Returns the current status of the lock, locked or unlocked.
+
+`/:name/lock` Locks the door.
+
+`/:name/unlock` Unlocks the door.
+
+`/:mac/pair/:name` Used for pairing. You have to replace `:mac` with the locks MAC address. Put the MAC address all lower case and no spaces or : characters, just one long string. The server internally will remove them but some clients/browsers might do things to the url you might not want to happen when you do this. Set the lock into pairing mode (long press button until it flashes) then call this action to pair the lock. You can use the status route to see if it worked.
+
+# Library Usage
 ```typescript
     const nubli = require('nubli').default;
 

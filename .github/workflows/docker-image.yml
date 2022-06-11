@@ -18,7 +18,7 @@ jobs:
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag christianriesen/nubli:latest
-    - name: Docker Push
-      run: docker push ${{secrets.DOCKER_USER}}/nubli
+    - name: Build the Docker images and push them
+      run: |
+        docker buildx create --name builder
+        docker buildx build --file Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v8 -t christianriesen/nubli --push .
