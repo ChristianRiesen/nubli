@@ -21,4 +21,4 @@ jobs:
     - name: Build the Docker images and push them
       run: |
         docker buildx create --use --name builder
-        docker buildx build --file Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v8 -t christianriesen/nubli --push .
+        docker buildx build --file Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v7 -t christianriesen/nubli --push .
